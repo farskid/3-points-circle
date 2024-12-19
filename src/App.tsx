@@ -89,16 +89,18 @@ export const InfiniteCanvas: React.FC = () => {
       });
     } else {
       const updatedPoints = [...state.points, newPoint];
+      const newCircle = updatedPoints.length === 3 && calculateCircleFrom3Points(
+        updatedPoints[0],
+        updatedPoints[1],
+        updatedPoints[2]
+      ) || null
+      if (updatedPoints.length === 3 && !newCircle) {
+        alert('Collinear points can not make a circle. Try picking points that do not all align on the same line')
+        return
+      }
       setState({
         points: updatedPoints,
-        circle:
-          updatedPoints.length === 3
-            ? calculateCircleFrom3Points(
-                updatedPoints[0],
-                updatedPoints[1],
-                updatedPoints[2]
-              )
-            : null,
+        circle: newCircle
       });
     }
   };
